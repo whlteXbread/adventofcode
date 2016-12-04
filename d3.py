@@ -1,5 +1,3 @@
-import operator
-
 #def load_data(filename: str) -> list:
 def load_data_by_rows(filename):
     parsed_data = []
