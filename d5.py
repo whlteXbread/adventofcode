@@ -1,10 +1,12 @@
 import operator
+import time
 from hashlib import md5
 
 def get_hash(string_to_hash):
-    return md5(string_to_hash).hexdigest()
+    return md5(string_to_hash.encode()).hexdigest()
 
 def decrypt_outer_password(d_id):
+    start_time = time.time()
     index = 0
     completed = False
     password = ''
@@ -17,9 +19,13 @@ def decrypt_outer_password(d_id):
             password += current_hash[5]
         if len(password) == 8:
             completed = True
-    print password
+    print(password)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("to decode door id [{}] it took {} seconds".format(d_id,elapsed_time))
 
 def decrypt_inner_password(d_id):
+    start_time = time.time()
     completed = False
     password_dict = {}
     password = ''
@@ -42,16 +48,19 @@ def decrypt_inner_password(d_id):
     sorted_by_key = sorted(password_dict.items(), key=operator.itemgetter(0))
     for toople in sorted_by_key:
         password += toople[1]
-    print password
+    print(password)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("to decode door id [{}] it took {} seconds".format(d_id,elapsed_time))
 
 def main():
     # do test input
-    #door_id = 'abc'
-    #decrypt_outer_password(door_id)
+    door_id = 'abc'
+    decrypt_outer_password(door_id)
 
     # do real input
-    #door_id = 'ffykfhsq'
-    #decrypt_outer_password(door_id)
+    door_id = 'ffykfhsq'
+    decrypt_outer_password(door_id)
 
     # do test input
     door_id = 'abc'
