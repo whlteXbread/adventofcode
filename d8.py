@@ -11,7 +11,7 @@ class BrokenScreen(object):
     def __init__(self, x_dim, y_dim):
         self.x_size = x_dim
         self.y_size = y_dim
-        self.screen = np.zeros((y_dim,x_dim))
+        self.screen = np.zeros((y_dim, x_dim))
     def parse_instruction(self, instruction):
         instruction = instruction.split(' ')
         if instruction[0] == 'rect':
@@ -20,10 +20,10 @@ class BrokenScreen(object):
         elif instruction[0] == 'rotate':
             if instruction[1] == 'row':
                 self.rotate_row(int(instruction[2][2:]), int(instruction[4]))
-            elif instruction[0] == 'column':
+            elif instruction[1] == 'column':
                 self.rotate_column(int(instruction[2][2:]), int(instruction[4]))
 
-    def generate_rect(self, x_size,y_size):
+    def generate_rect(self, x_size, y_size):
         print("making rect {} by {}".format(x_size,y_size))
         self.screen[0:y_size:, 0:x_size:] = 1
 
@@ -50,12 +50,24 @@ class BrokenScreen(object):
     
     def num_lit_pixels(self):
         return sum(sum(self.screen))
+    
+    def __str__(self):
+        current_display = 'On Screen: \n'
+        for y in range(0, self.y_size):
+            for x in range(0, self.x_size):
+                if self.screen[y, x]:
+                    current_display += '#'
+                else:
+                    current_display += ' '
+            current_display += '\n'
+        return current_display
 
 def main():
     instruction_set = load_data('d8_input.txt')
     broken_screen = BrokenScreen(50,6)
     for instruction in instruction_set:
         broken_screen.parse_instruction(instruction)
+        print(broken_screen)
     print(broken_screen.num_lit_pixels())
 
 if __name__ == "__main__":
